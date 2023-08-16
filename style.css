@@ -284,6 +284,38 @@
 }
 
 
+/* PAGINATION */
+
+#pagination{
+    background-color: black;
+    width: 98%;
+    /* grid-column-end: span 5; */
+    padding: 12px;
+    margin-bottom: 30px;
+}
+
+#pagination ul{
+    display: flex;
+    align-items: center;
+    overflow-x: scroll;
+}
+
+/* #pagination ul::-webkit-scrollbar{
+    width: 2px;
+    visibility: hidden;
+} */
+
+#pagination ul li{
+    list-style: none;
+    padding: 12px 18px;
+    margin: 8px 6px;
+    background-color: rgb(32, 32, 32);
+    border-radius: 6px;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+
 /* FOOTER */
 
 footer {
