@@ -89,15 +89,11 @@ async function fetchData(data) {
 
 function pagination(data) {
 
-    PAGINATION.innerHTML = "";
-    const paginationUL = document.createElement("ul");
-
-    // if (data.page>1) {
-    //     const prev = document.createElement("li");
-    //     prev.innerHTML="Prev";
-    //     paginationUL.appendChild(prev);
-    // }
-
+    const LISTS= PAGINATION.querySelector("#lists");
+    LISTS.innerHTML="";
+    
+    nextPrevious(data);
+    
     for (let index = 1; index <= `${data.total_pages > 500 ? 500 : data.total_pages}`; index++) {
         const li = document.createElement("li");
         li.innerHTML = index;
@@ -107,25 +103,43 @@ function pagination(data) {
             if (SEARCHINPUTS == "") {
                 const data = await fetchapi(`${APIURL}${e.target.innerHTML}`);
                 fetchData(data);
+                nextPrevious(data);
+                for(let i=0;i<`${data.total_pages > 500 ? 500 : data.total_pages}`;i++){
+                    LISTS.children[i].classList.remove("active");
+                }
             } else {
                 const data = await fetchapi(`${SEARCHAPI}${SEARCHINPUTS}&page=${e.target.innerHTML}`);
                 fetchData(data);
+                nextPrevious(data);
+                for(let i=0;i<`${data.total_pages > 500 ? 500 : data.total_pages}`;i++){
+                    LISTS.children[i].classList.remove("active");
+                }
             }
             
+            
+            // console.log(e)
+            e.target.classList.add("active");
         })
-        paginationUL.appendChild(li);
+        LISTS.appendChild(li);
     }
-
-    // if (data.page<`${data.total_pages > 500 ? 500 : data.total_pages}`) {
-    //     const next = document.createElement("li");
-    //     next.innerHTML="Next";
-    //     paginationUL.appendChild(next);
-    // }
-
-    PAGINATION.appendChild(paginationUL);
-
+    
+    LISTS.children[0].classList.add("active");
 }
 
+function nextPrevious(data) {
+
+    if (data.page > 1) {
+        PAGINATION.querySelector("#prev").style.visibility="visible";
+    }else{
+        PAGINATION.querySelector("#prev").style.visibility="hidden";
+    }
+
+    if (data.page<`${data.total_pages > 500 ? 500 : data.total_pages}`) {
+        PAGINATION.querySelector("#next").style.visibility="visible";
+    }else{
+        PAGINATION.querySelector("#next").style.visibility="hidden";
+    }
+}
 
 async function homepage(page = 1) {
     const data = await fetchapi(`${APIURL}${page}`);

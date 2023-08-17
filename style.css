@@ -274,7 +274,7 @@
     height: 198px;
 }
 
-.overlay>div .Storyline::-webkit-scrollbar{
+.overlay>div .Storyline::-webkit-scrollbar {
     width: 1px;
     visibility: hidden;
 }
@@ -286,33 +286,49 @@
 
 /* PAGINATION */
 
-#pagination{
-    background-color: black;
+#pagination {
+    display: flex;
+    align-items: center;
     width: 98%;
-    /* grid-column-end: span 5; */
+    background-color: black;
     padding: 12px;
     margin-bottom: 30px;
 }
 
-#pagination ul{
+#pagination #lists {
     display: flex;
     align-items: center;
     overflow-x: scroll;
 }
 
-/* #pagination ul::-webkit-scrollbar{
+#pagination #lists::-webkit-scrollbar {
     width: 2px;
-    visibility: hidden;
-} */
+    display: none;
+}
 
-#pagination ul li{
+#pagination #lists li {
     list-style: none;
+}
+
+#pagination #prev,
+#pagination #next,
+#pagination #lists li {
     padding: 12px 18px;
     margin: 8px 6px;
     background-color: rgb(32, 32, 32);
     border-radius: 6px;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     cursor: pointer;
+}
+
+#pagination #prev:hover,
+#pagination #next:hover,
+#pagination #lists li:hover {
+    background-color: rgb(10, 10, 10);
+}
+
+#pagination .active {
+    background-color: rgb(10, 10, 10) !important;
 }
 
 
