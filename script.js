@@ -103,10 +103,14 @@ function pagination(data) {
             if (SEARCHINPUTS == "") {
                 const data = await fetchapi(`${APIURL}${e.target.innerHTML}`);
                 fetchData(data);
-                nextPrevious(data);
+                nextPrevious(data); 
                 for(let i=0;i<`${data.total_pages > 500 ? 500 : data.total_pages}`;i++){
                     LISTS.children[i].classList.remove("active");
                 }
+
+                // PAGINATION.querySelector("#prev").addEventListener("click",()=>{
+                //     e.target.previousElementSibling.click();
+                // })
             } else {
                 const data = await fetchapi(`${SEARCHAPI}${SEARCHINPUTS}&page=${e.target.innerHTML}`);
                 fetchData(data);
@@ -116,8 +120,6 @@ function pagination(data) {
                 }
             }
             
-            
-            // console.log(e)
             e.target.classList.add("active");
         })
         LISTS.appendChild(li);
@@ -127,18 +129,24 @@ function pagination(data) {
 }
 
 function nextPrevious(data) {
+    const PREV = PAGINATION.querySelector("#prev");
+    const NEXT = PAGINATION.querySelector("#next");
 
     if (data.page > 1) {
-        PAGINATION.querySelector("#prev").style.visibility="visible";
+        PREV.style.visibility="visible";
     }else{
-        PAGINATION.querySelector("#prev").style.visibility="hidden";
+        PREV.style.visibility="hidden";
     }
 
     if (data.page<`${data.total_pages > 500 ? 500 : data.total_pages}`) {
-        PAGINATION.querySelector("#next").style.visibility="visible";
+        NEXT.style.visibility="visible";
     }else{
-        PAGINATION.querySelector("#next").style.visibility="hidden";
+        NEXT.style.visibility="hidden";
     }
+
+    // PREV.addEventListener("click",()=>{
+
+    // })
 }
 
 async function homepage(page = 1) {

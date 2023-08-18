@@ -148,6 +148,7 @@
     grid-template-columns: repeat(5, 255px);
     grid-gap: 2rem;
     padding-bottom: 40px;
+    min-height: 65vh;
 }
 
 .flip-card {
