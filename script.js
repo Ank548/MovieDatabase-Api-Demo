@@ -8,6 +8,8 @@ const CONTAINER = document.getElementById("container");
 
 const PAGINATION = document.getElementById("pagination");
 
+const REFRESH = document.getElementById("profile").lastElementChild;
+
 const SEARCHMOVIE = document.getElementById("SearchMovie").firstElementChild;
 
 
@@ -79,9 +81,17 @@ async function fetchData(data) {
                         </div>
                     </div>
                 </div>
-		`
+		`;
 
         CONTAINER.appendChild(FLIPCARD);
+
+        FLIPCARD.addEventListener("click", (event) => {
+            event.currentTarget.firstElementChild.style.transform = "rotateY(180deg)";
+        })
+
+        FLIPCARD.addEventListener("mouseleave",(event)=>{
+            event.currentTarget.firstElementChild.style.transform = "none";
+        })
     });
 
 }
@@ -89,69 +99,66 @@ async function fetchData(data) {
 
 function pagination(data) {
 
-    const LISTS= PAGINATION.querySelector("#lists");
-    LISTS.innerHTML="";
-    
+    const LISTS = PAGINATION.querySelector("#lists");
+    LISTS.innerHTML = "";
+
     nextPrevious(data);
-    
+
     for (let index = 1; index <= `${data.total_pages > 500 ? 500 : data.total_pages}`; index++) {
         const li = document.createElement("li");
         li.innerHTML = index;
         li.addEventListener("click", async (e) => {
             const SEARCHINPUTS = SEARCHMOVIE.value;
-            
+
+            PAGINATION.querySelector(".active").classList.remove("active")
+            e.target.classList.add("active");
+
             if (SEARCHINPUTS == "") {
                 const data = await fetchapi(`${APIURL}${e.target.innerHTML}`);
                 fetchData(data);
-                nextPrevious(data); 
-                for(let i=0;i<`${data.total_pages > 500 ? 500 : data.total_pages}`;i++){
-                    LISTS.children[i].classList.remove("active");
-                }
-
-                // PAGINATION.querySelector("#prev").addEventListener("click",()=>{
-                //     e.target.previousElementSibling.click();
-                // })
+                nextPrevious(data);
             } else {
                 const data = await fetchapi(`${SEARCHAPI}${SEARCHINPUTS}&page=${e.target.innerHTML}`);
                 fetchData(data);
                 nextPrevious(data);
-                for(let i=0;i<`${data.total_pages > 500 ? 500 : data.total_pages}`;i++){
-                    LISTS.children[i].classList.remove("active");
-                }
             }
-            
-            e.target.classList.add("active");
+
         })
         LISTS.appendChild(li);
     }
-    
+
     LISTS.children[0].classList.add("active");
 }
+
+PAGINATION.querySelector("#prev").addEventListener("click", () => {
+    PAGINATION.querySelector(".active").previousElementSibling.click();
+})
+
+PAGINATION.querySelector("#next").addEventListener("click", () => {
+    PAGINATION.querySelector(".active").nextElementSibling.click();
+})
 
 function nextPrevious(data) {
     const PREV = PAGINATION.querySelector("#prev");
     const NEXT = PAGINATION.querySelector("#next");
 
     if (data.page > 1) {
-        PREV.style.visibility="visible";
-    }else{
-        PREV.style.visibility="hidden";
+        PREV.style.visibility = "visible";
+    } else {
+        PREV.style.visibility = "hidden";
     }
 
-    if (data.page<`${data.total_pages > 500 ? 500 : data.total_pages}`) {
-        NEXT.style.visibility="visible";
-    }else{
-        NEXT.style.visibility="hidden";
+    if (data.page < `${data.total_pages > 500 ? 500 : data.total_pages}`) {
+        NEXT.style.visibility = "visible";
+    } else {
+        NEXT.style.visibility = "hidden";
     }
 
-    // PREV.addEventListener("click",()=>{
-
-    // })
 }
 
 async function homepage(page = 1) {
     const data = await fetchapi(`${APIURL}${page}`);
-    console.log(data)
+    // console.log(data)
     fetchData(data);
     pagination(data);
 };
@@ -172,4 +179,9 @@ SEARCHMOVIE.addEventListener("keyup", async (e) => {
         fetchData(data);
         pagination(data);
     }
+})
+
+
+REFRESH.addEventListener("click", () => {
+    window.location.reload();
 })

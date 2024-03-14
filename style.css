@@ -156,9 +156,9 @@
     height: 400px;
 }
 
-.flip-card:hover .item {
+/* .flip-card:hover .item {
     transform: rotateY(180deg);
-}
+} */
 
 #container .item {
     display: flex;
@@ -290,16 +290,19 @@
 #pagination {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 98%;
     background-color: black;
     padding: 12px;
     margin-bottom: 30px;
+    user-select: none;
 }
 
 #pagination #lists {
     display: flex;
     align-items: center;
     overflow-x: scroll;
+    max-width: 37.5%;
 }
 
 #pagination #lists::-webkit-scrollbar {
